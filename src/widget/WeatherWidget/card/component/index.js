@@ -2,16 +2,18 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 
 // Actions
-import {getPosition, getCurrentCityWeather} from '../action';
+import {getPosition, getCurrentCityWeather, getWeatherByCity} from '../action';
 
 // Utils
 import Spinner from '../util/Spinner/component';
 
-
 import {
     ROOT,
+    INPUT,
+    WIDGET_CARD,
     animated,
     zoomIn,
+    bounceIn,
     TOP_CONTAINER,
     WEATHER_ICON,
     MID_CONTAINER,
@@ -46,7 +48,7 @@ import {
 
 } from '../scss/root.scss'
 
-@connect( ({position, weather}) => ({...position, ...weather}), {getPosition, getCurrentCityWeather} )
+@connect( ({position, weather}) => ({...position, ...weather}), {getPosition, getCurrentCityWeather, getWeatherByCity} )
 
 class WeatherWidget extends Component {
     renderDate() {
@@ -171,10 +173,14 @@ class WeatherWidget extends Component {
                             <i className={` ${wi} ${wi_humidity} `}/> {humidity}
                         </div>
                     </div>
-                    {/*<div>navigation</div>*/}
                 </div>
             </div>
         )
+    }
+
+    onChange(e) {
+        const {getWeatherByCity} = this.props;
+        getWeatherByCity(e.target.value);
     }
 
     componentWillMount(){
@@ -186,11 +192,12 @@ class WeatherWidget extends Component {
     render() {
         const {weather} = this.props;
 
-        console.log('weather', weather);
-
         return (
             <div className={ROOT}>
-                {this.renderWeather(weather)}
+                <input className={INPUT} type="text" name="city" placeholder="Enter City" onChange={ (e)=>{this.onChange(e)} }/>
+                <div className={`${WIDGET_CARD}`}>
+                    {this.renderWeather(weather)}
+                </div>
             </div>
         )
     }

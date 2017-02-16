@@ -45,7 +45,7 @@ export function getCurrentCityWeather(lat, lon, units='metric') {
     }
 }
 
-export function getWeatherByCity(city,units) {
+export function getWeatherByCity(city,units='metric') {
   return dispatch => {
     const request = axios.get(`${API}/weather${APPID}&q=${city}&units=${units}`);
     request
