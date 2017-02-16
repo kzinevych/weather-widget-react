@@ -179,8 +179,12 @@ class WeatherWidget extends Component {
     }
 
     onChange(e) {
-        const {getWeatherByCity} = this.props;
-        getWeatherByCity(e.target.value);
+        const {getWeatherByCity, getCurrentCityWeather} = this.props;
+        if (e.target.value !== '') {
+            getWeatherByCity(e.target.value);
+        } else {
+            getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'));
+        }
     }
 
     componentWillMount(){
