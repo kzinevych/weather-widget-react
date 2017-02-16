@@ -1,0 +1,12 @@
+{
+  "presets": ["react", "es2015", "stage-0", "stage-1", "stage-2", "stage-3"],
+  "plugins": ["transform-runtime", "transform-decorators-legacy"],
+  "env": {
+    "release": {
+      "plugins": [
+        "transform-runtime",
+        ["transform-react-remove-prop-types", "transform-react-constant-elements", "transform-react-inline-elements", {"mode": "wrap"}]
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+/node_modules/
+/yarn_local_modules/
+.idea
+.DS_Store
+/public/
+/repos/
+/hs/
+/ssh/
+/stores/
+/bit/
+
+*.log
+
+/frontend/
