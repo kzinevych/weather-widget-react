@@ -15,3 +15,5 @@ npm server
 - changing unit types
 - favorite list (with likes)
 - recent list
+- add graphics
+- add service worker
