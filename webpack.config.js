@@ -12,7 +12,7 @@ const CLIENT = process.env.CLIENT;
  * @return {string}
  */
 function KeySecretSalt(len) {
-  let str = "itt-";
+  let str = "weather-";
   for (let i = 0; i < len; i++) {
     let rand     = Math.floor(Math.random() * 62);
     let charCode = rand += rand > 9 ? (rand < 36 ? 55 : 61) : 48;
