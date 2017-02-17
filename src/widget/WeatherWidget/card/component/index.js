@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 
 // Actions
-import {getPosition, getCurrentCityWeather, getWeatherByCity} from '../action';
+import {getPosition, getCurrentCityWeather, getWeatherByCity, setUnit, setCity} from '../action';
 
 // Utils
 import Spinner from '../util/Spinner/component';
@@ -15,6 +15,9 @@ import {
     zoomIn,
     bounceIn,
     TOP_CONTAINER,
+    CELSIUS,
+    FAHRENHEIT,
+    WEATHER_TYPE,
     WEATHER_ICON,
     MID_CONTAINER,
     BOT_CONTAINER,
@@ -42,13 +45,14 @@ import {
     wi_night_thunderstorm,
     wi_night_snow,
     wi_celsius,
+    wi_fahrenheit,
     wi_windy,
     wi_small_craft_advisory,
     wi_humidity,
 
 } from '../scss/root.scss'
 
-@connect( ({position, weather}) => ({...position, ...weather}), {getPosition, getCurrentCityWeather, getWeatherByCity} )
+@connect( ({position, weather, unit}) => ({...position, ...weather, ...unit}), {getPosition, getCurrentCityWeather, getWeatherByCity, setUnit, setCity} )
 
 class WeatherWidget extends Component {
     renderDate() {
@@ -68,7 +72,17 @@ class WeatherWidget extends Component {
         );
     }
 
+    renderUnits(unit) {
+        if (unit == 'metric') {
+            return <i className={` ${wi} ${wi_celsius} `}/>
+        } else if (unit == 'imperial') {
+            return <i className={` ${wi} ${wi_fahrenheit} `}/>
+        }
+    }
+
     renderWeather(weather) {
+        const {setUnit, unit} = this.props;
+
         if (!weather)
             return (<Spinner/>);
 
@@ -143,13 +157,17 @@ class WeatherWidget extends Component {
         return (
             <div className={`${animated} ${zoomIn}`}>
                 <div className={TOP_CONTAINER}>
+                    <div className={WEATHER_TYPE}>
+                        <div className={CELSIUS}><a onClick={ ()=> setUnit('metric') }><i className={` ${wi} ${wi_celsius} `}/></a></div>
+                        <div className={FAHRENHEIT}><a onClick={ ()=> setUnit('imperial') }><i className={` ${wi} ${wi_fahrenheit} `}/></a></div>
+                    </div>
                     <div className={WEATHER_ICON}>
                         {weatherIcon}
                     </div>
                 </div>
                 <div className={MID_CONTAINER}>
                     <div className={TEMPERATURE}>
-                        {temp}<i className={` ${wi} ${wi_celsius} `}/>
+                        {temp}{this.renderUnits(unit)}
                     </div>
                     <div className={NAMES}>
                         <div className={LOCATION_NAME}>
@@ -179,18 +197,20 @@ class WeatherWidget extends Component {
     }
 
     onChange(e) {
-        const {getWeatherByCity, getCurrentCityWeather} = this.props;
+        const {getWeatherByCity, getCurrentCityWeather, setCity, unit} = this.props;
+        setCity(e.target.value);
+
         if (e.target.value !== '') {
-            getWeatherByCity(e.target.value);
+            getWeatherByCity(e.target.value, unit);
         } else {
-            getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'));
+            getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), unit);
         }
     }
 
     componentWillMount(){
-        const {getPosition, position} = this.props;
+        const {getPosition, position, unit} = this.props;
         if (!position)
-            getPosition();
+            getPosition(unit);
     }
 
     render() {

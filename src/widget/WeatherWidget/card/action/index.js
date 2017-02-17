@@ -6,10 +6,10 @@ import {
     APPID
 } from '../config';
 
-export function getPosition(options) {
+export function getPosition(units) {
     return dispatch => {
         const request = new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            navigator.geolocation.getCurrentPosition(resolve, reject);
         });
 
         request.then((position) => {
@@ -20,7 +20,7 @@ export function getPosition(options) {
                 payload: position.coords
             });
 
-            dispatch(getCurrentCityWeather(position.coords.latitude, position.coords.longitude));
+            dispatch(getCurrentCityWeather(position.coords.latitude, position.coords.longitude, units));
 
         })
             .catch((err) => {
@@ -29,7 +29,7 @@ export function getPosition(options) {
     }
 }
 
-export function getCurrentCityWeather(lat, lon, units='metric') {
+export function getCurrentCityWeather(lat, lon, units) {
     return dispatch => {
         const request = axios.get(`${API}/weather${APPID}&lat=${lat}&lon=${lon}&units=${units}`);
         request
@@ -45,7 +45,7 @@ export function getCurrentCityWeather(lat, lon, units='metric') {
     }
 }
 
-export function getWeatherByCity(city,units='metric') {
+export function getWeatherByCity(city,units) {
   return dispatch => {
     const request = axios.get(`${API}/weather${APPID}&q=${city}&units=${units}`);
     request
@@ -74,5 +74,33 @@ export function getWeatherForecast(city,units) {
             .catch(({response}) => {
                 console.log(response);
             })
+    }
+}
+
+
+export function setUnit(units) {
+    return dispatch => {
+        dispatch({
+            type: types.SET_UNIT,
+            payload: units
+        });
+
+        if (sessionStorage.getItem('city')) {
+            dispatch(getWeatherByCity(sessionStorage.getItem('city'), units));
+        } else {
+            dispatch( getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), units) );
+        }
+
+    }
+}
+
+export function setCity(city) {
+    return dispatch => {
+        dispatch({
+            type: types.SET_CITY,
+            payload: city
+        });
+
+        sessionStorage.setItem('city', city);
     }
 }

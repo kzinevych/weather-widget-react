@@ -1,3 +1,5 @@
 export const GET_WEATHER_DATA = 'GET_WEATHER_DATA';
 export const GET_WEATHER_FORECAST_DATA = 'GET_WEATHER_FORECAST_DATA';
 export const GET_POSITION_DATA = 'GET_POSITION_DATA';
+export const SET_UNIT = 'SET_UNIT';
+export const SET_CITY = 'SET_CITY';

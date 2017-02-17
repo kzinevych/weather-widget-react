@@ -33,7 +33,28 @@
 
     .TOP_CONTAINER {
       display: flex;
+      flex-direction: column;
       justify-content: center;
+
+      .WEATHER_TYPE {
+        display: flex;
+        justify-content: flex-start;
+        padding: 5px 0 0 10px;
+        font-size: 26px;
+
+        .CELSIUS, .FAHRENHEIT {
+          margin: 10px;
+
+          a {
+            color: #778287;
+            cursor: pointer;
+
+            &:hover, &.active {
+              color: #54bae6;
+            }
+          }
+        }
+      }
 
       .WEATHER_ICON {
         margin: 40px 0;
