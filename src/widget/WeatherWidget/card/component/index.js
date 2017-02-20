@@ -14,6 +14,7 @@ import {
     animated,
     zoomIn,
     bounceIn,
+    active,
     TOP_CONTAINER,
     CELSIUS,
     FAHRENHEIT,
@@ -55,6 +56,15 @@ import {
 @connect( ({position, weather, unit}) => ({...position, ...weather, ...unit}), {getPosition, getCurrentCityWeather, getWeatherByCity, setUnit, setCity} )
 
 class WeatherWidget extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isActiveCel: true,
+            isActiveFah: false
+        }
+    }
+
     renderDate() {
         let today = new Date();
         let dd = today.getDate();
@@ -158,8 +168,8 @@ class WeatherWidget extends Component {
             <div className={`${animated} ${zoomIn}`}>
                 <div className={TOP_CONTAINER}>
                     <div className={WEATHER_TYPE}>
-                        <div className={CELSIUS}><a onClick={ ()=> setUnit('metric') }><i className={` ${wi} ${wi_celsius} `}/></a></div>
-                        <div className={FAHRENHEIT}><a onClick={ ()=> setUnit('imperial') }><i className={` ${wi} ${wi_fahrenheit} `}/></a></div>
+                        <div className={CELSIUS}><a className={(this.state.isActiveCel)?`${active}`:''} onClick={ ()=>{ setUnit('metric'); this.state.isActiveCel = true; this.state.isActiveFah = false} }><i className={` ${wi} ${wi_celsius} `}/></a></div>
+                        <div className={FAHRENHEIT}><a  className={(this.state.isActiveFah)?`${active}`:''} onClick={ ()=>{ setUnit('imperial'); this.state.isActiveCel = false; this.state.isActiveFah = true } }><i className={` ${wi} ${wi_fahrenheit} `}/></a></div>
                     </div>
                     <div className={WEATHER_ICON}>
                         {weatherIcon}
