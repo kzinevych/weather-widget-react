@@ -21,6 +21,7 @@ export function getPosition(units) {
             });
 
             dispatch(getCurrentCityWeather(position.coords.latitude, position.coords.longitude, units));
+            dispatch(getWeatherForecastByCord(position.coords.latitude, position.coords.longitude, units));
 
         })
             .catch((err) => {
@@ -61,9 +62,25 @@ export function getWeatherByCity(city,units) {
   }
 }
 
-export function getWeatherForecast(city,units) {
+export function getWeatherForecastByCord(lat, lon, units) {
     return dispatch => {
-        const request = axios.get(`${API}forecast${APPID}&q=${city}&units=${units}`);
+        const request = axios.get(`${API}/forecast${APPID}&lat=${lat}&lon=${lon}&units=${units}`);
+        request
+            .then(({data}) => {
+                dispatch({
+                    type: types.GET_WEATHER_FORECAST_DATA,
+                    payload: data
+                });
+            })
+            .catch(({response}) => {
+                console.log(response);
+            })
+    }
+}
+
+export function getWeatherForecastByCity(city,units) {
+    return dispatch => {
+        const request = axios.get(`${API}/forecast${APPID}&q=${city}&units=${units}`);
         request
             .then(({data}) => {
                 dispatch({
@@ -86,9 +103,11 @@ export function setUnit(units) {
         });
 
         if (sessionStorage.getItem('city')) {
-            dispatch(getWeatherByCity(sessionStorage.getItem('city'), units));
+            dispatch( getWeatherByCity(sessionStorage.getItem('city'), units) );
+            dispatch( getWeatherForecastByCity(sessionStorage.getItem('city'), units) );
         } else {
             dispatch( getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), units) );
+            dispatch( getWeatherForecastByCord(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), units) );
         }
 
     }

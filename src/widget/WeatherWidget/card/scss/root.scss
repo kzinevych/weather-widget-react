@@ -19,104 +19,149 @@
     }
   }
 
-  .WIDGET_CARD {
+  .WIDGETS_CONTAINER {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 20px auto;
-    background: #fff;
-    width: 400px;
-    min-height: 323px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    overflow: hidden;
 
-    .TOP_CONTAINER {
+    .WIDGET_CARD {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      margin: 20px;
+      background: #fff;
+      width: 400px;
+      min-height: 323px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      overflow: hidden;
 
-      .WEATHER_TYPE {
+      .TOP_CONTAINER {
         display: flex;
-        justify-content: flex-start;
-        padding: 5px 0 0 10px;
-        font-size: 26px;
+        flex-direction: column;
+        justify-content: center;
 
-        .CELSIUS, .FAHRENHEIT {
-          margin: 10px;
+        .WEATHER_TYPE {
+          display: flex;
+          justify-content: flex-start;
+          padding: 5px 0 0 10px;
+          font-size: 26px;
 
-          a {
-            color: #778287;
-            cursor: pointer;
+          .CELSIUS, .FAHRENHEIT {
+            margin: 10px;
 
-            &:hover, &.active {
-              color: #54bae6;
+            a {
+              color: #778287;
+              cursor: pointer;
+
+              &:hover, &.active {
+                color: #54bae6;
+              }
             }
           }
         }
-      }
 
-      .WEATHER_ICON {
-        margin: 40px 0;
-        font-size: 76px;
-        color: #778287;
-      }
-    }
-
-    .MID_CONTAINER {
-      display: flex;
-      margin: 0 0 10px 0;
-
-      .TEMPERATURE {
-        display: flex;
-        flex: 1;
-        align-items: center;
-        font-size: 32px;
-        padding: 10px;
-        color: #a5acaf;
-      }
-
-      .NAMES {
-        display: flex;
-        flex: 2;
-        flex-direction: column;
-        justify-content: center;
-        padding: 10px;
-        color: #a5acaf;
-
-        .LOCATION_NAME {
-          color: #bac2c6;
-          font-size: 16px;
+        .WEATHER_ICON {
+          margin: 40px 0;
+          font-size: 76px;
+          color: #778287;
         }
+      }
 
-        .WEATHER_NAME {
+      .MID_CONTAINER {
+        display: flex;
+        margin: 0 0 10px 0;
+
+        .TEMPERATURE {
+          display: flex;
+          flex: 1;
+          align-items: center;
+          font-size: 32px;
+          padding: 10px;
           color: #a5acaf;
-          font-size: 14px;
+        }
+
+        .NAMES {
+          display: flex;
+          flex: 2;
+          flex-direction: column;
+          justify-content: center;
+          padding: 10px;
+          color: #a5acaf;
+
+          .LOCATION_NAME {
+            color: #bac2c6;
+            font-size: 16px;
+          }
+
+          .WEATHER_NAME {
+            color: #a5acaf;
+            font-size: 14px;
+          }
+        }
+
+        .DATE {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          justify-content: center;
+          font-size: 20px;
+          background-color: #54bae6;
+          color: #fff;
+          padding: 10px;
+          height: 65px;
+        }
+
+      }
+
+      .BOT_CONTAINER {
+        background-color: #2e3335;
+        color: #fff;
+
+        .WIND_HUM {
+          display: flex;
+          justify-content: space-around;
+          padding: 20px;
         }
       }
-
-      .DATE {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: center;
-        font-size: 20px;
-        background-color: #54bae6;
-        color: #fff;
-        padding: 10px;
-        height: 65px;
-      }
-
     }
 
-    .BOT_CONTAINER {
-      background-color: #2e3335;
-      color: #fff;
+    .WIDGET_FORECAST {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 20px;
+      background: #fff;
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      overflow: scroll;
 
-      .WIND_HUM {
+      .WEATHER_LIST {
         display: flex;
-        justify-content: space-around;
-        padding: 20px;
+
+        .WEATHER_LIST_ITEM {
+          padding: 10px 0;
+
+          .WEATHER_LIST_TEMP {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            padding: 10px;
+            color: #a5acaf;
+          }
+
+          .WEATHER_LIST_DATE {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 14px;
+            background-color: #54bae6;
+            color: #fff;
+            padding: 10px;
+            height: 65px;
+          }
+        }
       }
     }
   }

@@ -2,15 +2,22 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 
 // Actions
-import {getPosition, getCurrentCityWeather, getWeatherByCity, setUnit, setCity} from '../action';
+import {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherForecastByCity, setUnit, setCity} from '../action';
 
 // Utils
 import Spinner from '../util/Spinner/component';
+import {getWeatherIcon} from '../util/GetWeatherIcon';
 
 import {
     ROOT,
     INPUT,
+    WIDGETS_CONTAINER,
     WIDGET_CARD,
+    WIDGET_FORECAST,
+    WEATHER_LIST,
+    WEATHER_LIST_ITEM,
+    WEATHER_LIST_DATE,
+    WEATHER_LIST_TEMP,
     animated,
     zoomIn,
     bounceIn,
@@ -51,9 +58,9 @@ import {
     wi_small_craft_advisory,
     wi_humidity,
 
-} from '../scss/root.scss'
+} from '../scss/root.scss';
 
-@connect( ({position, weather, unit}) => ({...position, ...weather, ...unit}), {getPosition, getCurrentCityWeather, getWeatherByCity, setUnit, setCity} )
+@connect( ({position, weather, weatherForecast, unit, city}) => ({...position, ...weather, ...weatherForecast, ...unit, ...city}), {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherForecastByCity, setUnit, setCity} )
 
 class WeatherWidget extends Component {
     constructor(props) {
@@ -82,6 +89,27 @@ class WeatherWidget extends Component {
         );
     }
 
+    renderDateList(weatherDate) {
+        let today = new Date(weatherDate);
+
+        let dd = today.getDate();
+        let mm = today.getMonth();
+        let hours = today.getHours();
+        let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
+
+        let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        let currentMonth = month[mm];
+
+        return (
+            <div className={WEATHER_LIST_DATE}>
+                <div>{currentMonth}</div>
+                <div>{dd}</div>
+                <div>{hours}:{minutes}</div>
+            </div>
+        );
+    }
+
     renderUnits(unit) {
         if (unit == 'metric') {
             return <i className={` ${wi} ${wi_celsius} `}/>
@@ -105,63 +133,7 @@ class WeatherWidget extends Component {
         if (weather.weather[0]) {
             weatherName = weather.weather[0].main;
             weatherIconId = weather.weather[0].icon;
-
-            switch (weatherIconId) {
-                case '01d':
-                    weatherIcon = <i className={`${wi} ${wi_day_sunny}`}/>;
-                    break;
-                case '02d':
-                    weatherIcon = <i className={`${wi} ${wi_day_cloudy}`}/>;
-                    break;
-                case '03d':
-                    weatherIcon = <i className={`${wi} ${wi_cloud}`}/>;
-                    break;
-                case '04d':
-                    weatherIcon = <i className={`${wi} ${wi_cloudy}`}/>;
-                    break;
-                case '09d':
-                    weatherIcon = <i className={`${wi} ${wi_showers}`}/>;
-                    break;
-                case '10d':
-                    weatherIcon = <i className={`${wi} ${wi_day_rain}`}/>;
-                    break;
-                case '11d':
-                    weatherIcon = <i className={`${wi} ${wi_day_thunderstorm}`}/>;
-                    break;
-                case '13d':
-                    weatherIcon = <i className={`${wi} ${wi_day_snow}`}/>;
-                    break;
-                case '50d':
-                    weatherIcon = <i className={`${wi} ${wi_fog}`}/>;
-                    break;
-                case '01n':
-                    weatherIcon = <i className={`${wi} ${wi_night_clear}`}/>;
-                    break;
-                case '02n':
-                    weatherIcon = <i className={`${wi} ${wi_night_alt_cloudy}`}/>;
-                    break;
-                case '03n':
-                    weatherIcon = <i className={`${wi} ${wi_night_cloudy}`}/>;
-                    break;
-                case '04n':
-                    weatherIcon = <i className={`${wi} ${wi_cloudy}`}/>;
-                    break;
-                case '09n':
-                    weatherIcon = <i className={`${wi} ${wi_night_showers}`}/>;
-                    break;
-                case '10n':
-                    weatherIcon = <i className={`${wi} ${wi_night_rain}`}/>;
-                    break;
-                case '11n':
-                    weatherIcon = <i className={`${wi} ${wi_night_thunderstorm}`}/>;
-                    break;
-                case '13n':
-                    weatherIcon = <i className={`${wi} ${wi_night_snow}`}/>;
-                    break;
-                case '50n':
-                    weatherIcon = <i className={`${wi} ${wi_fog}`}/>;
-                    break;
-            }
+            weatherIcon = getWeatherIcon(weatherIconId);
         }
 
         return (
@@ -207,14 +179,51 @@ class WeatherWidget extends Component {
     }
 
     onChange(e) {
-        const {getWeatherByCity, getCurrentCityWeather, setCity, unit} = this.props;
+        const {getWeatherByCity, getWeatherForecastByCity, getCurrentCityWeather, setCity, unit} = this.props;
         setCity(e.target.value);
 
         if (e.target.value !== '') {
             getWeatherByCity(e.target.value, unit);
+            getWeatherForecastByCity(e.target.value, unit);
         } else {
             getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), unit);
         }
+    }
+
+    renderWeatherForecast(weatherForecast) {
+        const {unit} = this.props;
+        console.log('weatherForecast', weatherForecast);
+
+        if (!weatherForecast)
+            return (<Spinner/>);
+
+        let WeatherList;
+
+        if (weatherForecast.cod == 200) {
+            WeatherList = weatherForecast.list.map((weatherItem)=> {
+
+                let weatherName = weatherItem.weather[0].main;
+                let weatherIconId = weatherItem.weather[0].icon;
+                let weatherIcon = getWeatherIcon(weatherIconId);
+
+                return (
+                    <div key={Math.random()} className={WEATHER_LIST_ITEM}>
+                        <div>
+                            <div>{weatherIcon}</div>
+                            <div>{weatherName}</div>
+                            <div className={WEATHER_LIST_TEMP}>{weatherItem.main.temp}{this.renderUnits(unit)}</div>
+                        </div>
+                        {this.renderDateList(weatherItem.dt_txt)}
+                    </div>
+                )
+            });
+        }
+
+        return (
+            <div className={WEATHER_LIST}>
+                {WeatherList}
+            </div>
+        )
     }
 
     componentWillMount(){
@@ -224,13 +233,18 @@ class WeatherWidget extends Component {
     }
 
     render() {
-        const {weather} = this.props;
+        const {weather, weatherForecast, city} = this.props;
 
         return (
             <div className={ROOT}>
-                <input className={INPUT} type="text" name="city" placeholder="Enter City" onChange={ (e)=>{this.onChange(e)} }/>
-                <div className={`${WIDGET_CARD}`}>
-                    {this.renderWeather(weather)}
+                <input className={INPUT} type="text" name="city" placeholder="Enter City" value={city} onChange={ (e)=>{this.onChange(e)} }/>
+                <div className={`${WIDGETS_CONTAINER}`}>
+                    <div className={`${WIDGET_CARD}`}>
+                        {this.renderWeather(weather)}
+                    </div>
+                    <div className={`${WIDGET_FORECAST}`}>
+                        {this.renderWeatherForecast(weatherForecast)}
+                    </div>
                 </div>
             </div>
         )
