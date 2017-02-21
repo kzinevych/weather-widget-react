@@ -11,15 +11,26 @@ import {getWeatherIcon} from '../util/GetWeatherIcon';
 import {
     ROOT,
     INPUT,
+    FLEX_ROW,
+    FLEX_COLUMN,
+    FLEX_CENTER,
+    FLEX_MIDDLE,
+    FLEX_AROUND,
+    FLEX_BETWEEN,
+    FLEX_1,
+    BG_DARK,
     WIDGETS_CONTAINER,
     WIDGET_CARD,
+    WIDGET_COLUMN,
     WIDGET_FORECAST,
     WEATHER_LIST,
+    COLUMN,
     WEATHER_LIST_ITEM,
+    WEATHER_LIST_UNIT,
     WEATHER_LIST_DATE,
-    WEATHER_LIST_TEMP,
     animated,
     zoomIn,
+    fadeIn,
     bounceIn,
     active,
     TOP_CONTAINER,
@@ -91,20 +102,27 @@ class WeatherWidget extends Component {
 
     renderDateList(weatherDate) {
         let today = new Date(weatherDate);
-
         let dd = today.getDate();
         let mm = today.getMonth();
-        let hours = today.getHours();
-        let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
-
         let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
         let currentMonth = month[mm];
 
         return (
             <div className={WEATHER_LIST_DATE}>
                 <div>{currentMonth}</div>
                 <div>{dd}</div>
+            </div>
+        );
+    }
+
+    renderTimeList(weatherDate) {
+        let today = new Date(weatherDate);
+
+        let hours = today.getHours();
+        let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
+
+        return (
+            <div className={WEATHER_LIST_DATE}>
                 <div>{hours}:{minutes}</div>
             </div>
         );
@@ -192,7 +210,6 @@ class WeatherWidget extends Component {
 
     renderWeatherForecast(weatherForecast) {
         const {unit} = this.props;
-        console.log('weatherForecast', weatherForecast);
 
         if (!weatherForecast)
             return (<Spinner/>);
@@ -207,20 +224,68 @@ class WeatherWidget extends Component {
                 let weatherIcon = getWeatherIcon(weatherIconId);
 
                 return (
-                    <div key={Math.random()} className={WEATHER_LIST_ITEM}>
-                        <div>
-                            <div>{weatherIcon}</div>
-                            <div>{weatherName}</div>
-                            <div className={WEATHER_LIST_TEMP}>{weatherItem.main.temp}{this.renderUnits(unit)}</div>
+                    <div key={Math.random()} className={`${WEATHER_LIST_ITEM} ${animated} ${fadeIn}`}>
+                        <div className={FLEX_COLUMN}>
+                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherIcon}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherName}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherItem.main.temp}{this.renderUnits(unit)}</div>
                         </div>
                         {this.renderDateList(weatherItem.dt_txt)}
+                    </div>
+                )
+
+            });
+        }
+
+        return (
+            <div className={WEATHER_LIST}>
+                {WeatherList}
+            </div>
+        )
+    }
+
+    renderWeatherForecastList(weatherForecast) {
+        const {unit} = this.props;
+
+        if (!weatherForecast)
+            return (<Spinner/>);
+
+        let WeatherList;
+
+        if (weatherForecast.cod == 200) {
+            WeatherList = weatherForecast.list.map((weatherItem, ii)=> {
+
+                let weatherName = weatherItem.weather[0].main;
+                let weatherIconId = weatherItem.weather[0].icon;
+                let weatherIcon = getWeatherIcon(weatherIconId);
+                let weatherTemp = weatherItem.main.temp;
+                let windSpeed = weatherItem.wind.speed;
+                let windDegry = weatherItem.wind.deg;
+                let humidity = weatherItem.main.humidity;
+
+                return (
+                    <div key={Math.random()} className={`${WEATHER_LIST_ITEM} ${animated} ${fadeIn}`}>
+                        {(((ii+1)%9==0) || (ii==0))?this.renderDateList(weatherItem.dt_txt):null}
+                        <div className={FLEX_ROW}>
+                            {this.renderTimeList(weatherItem.dt_txt)}
+                            <div className={`${FLEX_ROW} ${FLEX_1} ${FLEX_AROUND}`}>
+                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherIcon}</div>
+                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherName}</div>
+                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherTemp}{this.renderUnits(unit)}</div>
+                            </div>
+                            <div className={`${FLEX_ROW} ${FLEX_1} ${FLEX_AROUND} ${BG_DARK}`}>
+                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_windy}`}/>{windSpeed}</div>
+                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_small_craft_advisory}`}/>{windDegry}</div>
+                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_humidity}`}/>{humidity}</div>
+                            </div>
+                        </div>
                     </div>
                 )
             });
         }
 
         return (
-            <div className={WEATHER_LIST}>
+            <div className={`${WEATHER_LIST} ${COLUMN}`}>
                 {WeatherList}
             </div>
         )
@@ -244,6 +309,9 @@ class WeatherWidget extends Component {
                     </div>
                     <div className={`${WIDGET_FORECAST}`}>
                         {this.renderWeatherForecast(weatherForecast)}
+                    </div>
+                    <div className={`${WIDGET_FORECAST}`}>
+                        {this.renderWeatherForecastList(weatherForecast)}
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@ const initialState = {
   weather: null,
   weatherForecast: null,
   unit: (sessionStorage.getItem('unit'))?sessionStorage.getItem('unit'):'metric',
-  city: ''
+  city: (sessionStorage.getItem('city'))?sessionStorage.getItem('city'):''
 };
 
 export default function (state = initialState, action) {

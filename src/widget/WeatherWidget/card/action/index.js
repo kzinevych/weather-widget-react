@@ -20,8 +20,14 @@ export function getPosition(units) {
                 payload: position.coords
             });
 
-            dispatch(getCurrentCityWeather(position.coords.latitude, position.coords.longitude, units));
-            dispatch(getWeatherForecastByCord(position.coords.latitude, position.coords.longitude, units));
+            if (sessionStorage.getItem('city')) {
+                dispatch( getWeatherByCity(sessionStorage.getItem('city'), units) );
+                dispatch( getWeatherForecastByCity(sessionStorage.getItem('city'), units) );
+            } else {
+                dispatch( getCurrentCityWeather(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), units) );
+                dispatch( getWeatherForecastByCord(sessionStorage.getItem('lat'), sessionStorage.getItem('lon'), units) );
+            }
+
 
         })
             .catch((err) => {

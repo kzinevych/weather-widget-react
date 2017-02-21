@@ -5,7 +5,7 @@ const loaders           = require('./webpack.loaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const HOST   = process.env.HOST || "localhost";
-const PORT   = process.env.PORT || "3000";
+const PORT   = process.env.PORT || "9000";
 const CLIENT = process.env.CLIENT;
 
 /**

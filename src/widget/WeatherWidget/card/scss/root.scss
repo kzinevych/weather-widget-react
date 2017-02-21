@@ -19,16 +19,51 @@
     }
   }
 
+  .FLEX_ROW {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .FLEX_COLUMN {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .FLEX_CENTER {
+    justify-content: center;
+  }
+
+  .FLEX_AROUND {
+    justify-content: space-around;
+  }
+
+  .FLEX_BETWEEN {
+    justify-content: space-between;
+  }
+
+  .FLEX_MIDDLE {
+    align-items: center;
+  }
+
+  .FLEX_1 {
+    flex: 1;
+  }
+
+  .BG_DARK {
+    background-color: #2e3335;
+  }
+
   .WIDGETS_CONTAINER {
     display: flex;
+    flex-direction: column;
+    margin: 20px;
 
     .WIDGET_CARD {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 20px;
+      margin: 20px 0;
       background: #fff;
-      width: 400px;
       min-height: 323px;
       border-radius: 10px;
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -108,6 +143,7 @@
           color: #fff;
           padding: 10px;
           height: 65px;
+          min-width: 65px;
         }
 
       }
@@ -128,21 +164,24 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin: 20px;
+      margin: 20px 0;
       background: #fff;
       width: 100%;
-      height: 160px;
       border-radius: 10px;
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
       overflow: scroll;
+      max-height: 300px;
 
       .WEATHER_LIST {
         display: flex;
 
-        .WEATHER_LIST_ITEM {
-          padding: 10px 0;
+        &.COLUMN {
+          flex-direction: column;
+        }
 
-          .WEATHER_LIST_TEMP {
+        .WEATHER_LIST_ITEM {
+
+          .WEATHER_LIST_UNIT {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -160,9 +199,11 @@
             color: #fff;
             padding: 10px;
             height: 65px;
+            min-width: 65px;
           }
         }
       }
     }
+
   }
 }
