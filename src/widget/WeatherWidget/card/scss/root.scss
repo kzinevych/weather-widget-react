@@ -19,6 +19,10 @@
     }
   }
 
+  .TITLE {
+    text-align: center;
+  }
+
   .FLEX_ROW {
     display: flex;
     flex-direction: row;
@@ -156,6 +160,52 @@
           display: flex;
           justify-content: space-around;
           padding: 20px;
+        }
+      }
+    }
+
+    .WIDGET_DAILY {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 20px 0;
+      background: #fff;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      overflow: scroll;
+      max-height: 300px;
+
+      .WEATHER_LIST {
+        display: flex;
+
+        &.COLUMN {
+          flex-direction: column;
+        }
+
+        .WEATHER_LIST_ITEM {
+
+
+          .WEATHER_LIST_UNIT {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            padding: 10px;
+            color: #a5acaf;
+          }
+
+          .WEATHER_LIST_DATE {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 14px;
+            background-color: #54bae6;
+            color: #fff;
+            padding: 10px;
+            height: 65px;
+            min-width: 65px;
+          }
         }
       }
     }

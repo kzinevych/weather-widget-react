@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 
 // Actions
-import {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherForecastByCity, setUnit, setCity} from '../action';
+import {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherDailyByCity, getWeatherDailyByCord, getWeatherForecastByCity, setUnit, setCity} from '../action';
 
 // Utils
 import Spinner from '../util/Spinner/component';
@@ -11,6 +11,7 @@ import {getWeatherIcon} from '../util/GetWeatherIcon';
 import {
     ROOT,
     INPUT,
+    TITLE,
     FLEX_ROW,
     FLEX_COLUMN,
     FLEX_CENTER,
@@ -22,6 +23,7 @@ import {
     WIDGETS_CONTAINER,
     WIDGET_CARD,
     WIDGET_COLUMN,
+    WIDGET_DAILY,
     WIDGET_FORECAST,
     WEATHER_LIST,
     COLUMN,
@@ -71,7 +73,7 @@ import {
 
 } from '../scss/root.scss';
 
-@connect( ({position, weather, weatherForecast, unit, city}) => ({...position, ...weather, ...weatherForecast, ...unit, ...city}), {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherForecastByCity, setUnit, setCity} )
+@connect( ({position, weather, weatherDaily, weatherForecast, unit, city}) => ({...position, ...weather, ...weatherDaily, ...weatherForecast, ...unit, ...city}), {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherDailyByCity, getWeatherDailyByCord, getWeatherForecastByCity, setUnit, setCity} )
 
 class WeatherWidget extends Component {
     constructor(props) {
@@ -102,6 +104,7 @@ class WeatherWidget extends Component {
 
     renderDateList(weatherDate) {
         let today = new Date(weatherDate);
+
         let dd = today.getDate();
         let mm = today.getMonth();
         let month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -208,29 +211,30 @@ class WeatherWidget extends Component {
         }
     }
 
-    renderWeatherForecast(weatherForecast) {
+    renderWeatherDaily(weatherDaily) {
         const {unit} = this.props;
 
-        if (!weatherForecast)
+        if (!weatherDaily)
             return (<Spinner/>);
 
         let WeatherList;
 
-        if (weatherForecast.cod == 200) {
-            WeatherList = weatherForecast.list.map((weatherItem)=> {
+        if (weatherDaily.cod == 200) {
+            WeatherList = weatherDaily.list.map((weatherItem)=> {
 
                 let weatherName = weatherItem.weather[0].main;
                 let weatherIconId = weatherItem.weather[0].icon;
                 let weatherIcon = getWeatherIcon(weatherIconId);
-
+                
                 return (
                     <div key={Math.random()} className={`${WEATHER_LIST_ITEM} ${animated} ${fadeIn}`}>
                         <div className={FLEX_COLUMN}>
                             <div className={`${WEATHER_LIST_UNIT}`}>{weatherIcon}</div>
                             <div className={`${WEATHER_LIST_UNIT}`}>{weatherName}</div>
-                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherItem.main.temp}{this.renderUnits(unit)}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_day_sunny}`}/> {weatherItem.temp.day}{this.renderUnits(unit)}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_night_clear}`}/> {weatherItem.temp.night}{this.renderUnits(unit)}</div>
                         </div>
-                        {this.renderDateList(weatherItem.dt_txt)}
+                        {this.renderDateList(weatherItem.dt)}
                     </div>
                 )
 
@@ -244,7 +248,7 @@ class WeatherWidget extends Component {
         )
     }
 
-    renderWeatherForecastList(weatherForecast) {
+    renderWeatherForecast(weatherForecast) {
         const {unit} = this.props;
 
         if (!weatherForecast)
@@ -298,20 +302,25 @@ class WeatherWidget extends Component {
     }
 
     render() {
-        const {weather, weatherForecast, city} = this.props;
+        const {weather, weatherDaily, weatherForecast, city} = this.props;
 
         return (
             <div className={ROOT}>
                 <input className={INPUT} type="text" name="city" placeholder="Enter City" value={city} onChange={ (e)=>{this.onChange(e)} }/>
                 <div className={`${WIDGETS_CONTAINER}`}>
+                    <h1 className={TITLE}>CURRENT WEATHER</h1>
                     <div className={`${WIDGET_CARD}`}>
                         {this.renderWeather(weather)}
                     </div>
+
+                    <h1 className={TITLE}>DAILY WEATHER</h1>
+                    <div className={`${WIDGET_DAILY}`}>
+                        {this.renderWeatherDaily(weatherDaily)}
+                    </div>
+
+                    <h1 className={TITLE}>3 HOURS WEATHER</h1>
                     <div className={`${WIDGET_FORECAST}`}>
                         {this.renderWeatherForecast(weatherForecast)}
-                    </div>
-                    <div className={`${WIDGET_FORECAST}`}>
-                        {this.renderWeatherForecastList(weatherForecast)}
                     </div>
                 </div>
             </div>

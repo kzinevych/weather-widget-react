@@ -3,6 +3,7 @@ import * as types from "../constant";
 const initialState = {
   position: null,
   weather: null,
+  weatherDaily: null,
   weatherForecast: null,
   unit: (sessionStorage.getItem('unit'))?sessionStorage.getItem('unit'):'metric',
   city: (sessionStorage.getItem('city'))?sessionStorage.getItem('city'):''
@@ -14,6 +15,8 @@ export default function (state = initialState, action) {
       return {...state, position: action.payload};
     case types.GET_WEATHER_DATA:
       return {...state, weather: action.payload};
+    case types.GET_WEATHER_DAILY_DATA:
+      return {...state, weatherDaily: action.payload};
     case types.GET_WEATHER_FORECAST_DATA:
       return {...state, weatherForecast: action.payload};
     case types.SET_UNIT:
