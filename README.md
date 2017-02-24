@@ -1,4 +1,7 @@
-# Weather Widget
+# Weather Widget (Isolate React JS components)
+# Easy Start
+# Just import widget reducer to (APP/reducers/index.js), and import Widget Component.
+# Working on <a href="http://openweathermap.org">Openweather API</a>.
 
 npm i
 
