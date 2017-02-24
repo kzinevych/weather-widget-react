@@ -89,7 +89,7 @@ class WeatherWidgetForecast extends Component {
     }
     
     renderDateList(weatherDate) {
-        let today = new Date(weatherDate);
+        let today = new Date(weatherDate.replace(/-/g, "/"));
 
         let dd = today.getDate();
         let mm = today.getMonth();
@@ -105,7 +105,10 @@ class WeatherWidgetForecast extends Component {
     }
 
     renderTimeList(weatherDate) {
-        let today = new Date(weatherDate);
+        console.log('weatherDate',weatherDate);
+        let today = new Date(weatherDate.replace(/-/g, "/"));
+
+        console.log('today',today);
 
         let hours = today.getHours();
         let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
