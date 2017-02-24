@@ -1,0 +1,3 @@
+export const GET_WEATHER_DATA = 'GET_WEATHER_DATA';
+export const GET_POSITION_DATA = 'GET_POSITION_DATA';
+export const SET_UNITS = 'SET_UNITS';

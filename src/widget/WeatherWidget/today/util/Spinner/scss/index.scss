@@ -1,0 +1,58 @@
+.SPINNER {
+  background: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+
+  .LOADING {
+    margin: 50px auto;
+    width: 250px;
+  }
+
+  .LOADING > span {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 1em;
+    font-weight: 300;
+    color: #778287;
+  }
+
+  .LOAD {
+    width: 40px;
+    animation: LOADING 2.5s linear infinite;
+
+    .LOADING_INNER {
+      stroke-dashoffset: 0;
+      stroke-dasharray: 300;
+      stroke-width: 10;
+      stroke-miterlimit: 10;
+      stroke-linecap: round;
+      animation: LOADING_CIRCLE 2s linear infinite;
+      stroke: #778287;
+      fill: transparent;
+    }
+  }
+
+  @keyframes LOADING {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes LOADING_CIRCLE {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: -600;
+    }
+  }
+}
+
+

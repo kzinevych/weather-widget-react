@@ -73,9 +73,9 @@ import {
 
 } from '../scss/root.scss';
 
-@connect( ({position, weather, weatherDaily, weatherForecast, unit, city}) => ({...position, ...weather, ...weatherDaily, ...weatherForecast, ...unit, ...city}), {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherDailyByCity, getWeatherDailyByCord, getWeatherForecastByCity, setUnit, setCity} )
+@connect( ({weatherDemo}) => ({...weatherDemo}), {getPosition, getCurrentCityWeather, getWeatherByCity, getWeatherDailyByCity, getWeatherDailyByCord, getWeatherForecastByCity, setUnit, setCity} )
 
-class WeatherWidget extends Component {
+class WeatherWidgetDemo extends Component {
     constructor(props) {
         super(props);
 
@@ -328,4 +328,4 @@ class WeatherWidget extends Component {
     }
 }
 
-export default WeatherWidget;
+export default WeatherWidgetDemo;

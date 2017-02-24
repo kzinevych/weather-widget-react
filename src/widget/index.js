@@ -1,6 +1,12 @@
-import {WeatherWidget, weather} from './WeatherWidget/card';
+import {WeatherWidgetDemo, weatherDemo} from './WeatherWidget/demo';
+import {WeatherWidgetToday, weatherToday} from './WeatherWidget/today';
+import {WeatherWidgetForecast, weatherForecast} from './WeatherWidget/forecast';
 
 export {
-    WeatherWidget,
-    weather
+    WeatherWidgetDemo,
+    weatherDemo,
+    WeatherWidgetToday,
+    weatherToday,
+    WeatherWidgetForecast,
+    weatherForecast
 }
