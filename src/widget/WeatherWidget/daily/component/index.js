@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import {connect} from "react-redux";
 
 // Actions
-import {getPosition, getWeatherForecastByCity} from '../action';
+import {getPosition, getWeatherDailyByCity, getWeatherDailyByCord, setUnit} from '../action';
 
 // Utils
 import Spinner from '../util/Spinner/component';
@@ -10,6 +10,8 @@ import {getWeatherIcon} from '../util/GetWeatherIcon';
 
 import {
     ROOT,
+    INPUT,
+    TITLE,
     FLEX_ROW,
     FLEX_COLUMN,
     FLEX_CENTER,
@@ -19,9 +21,10 @@ import {
     FLEX_1,
     BG_DARK,
     WIDGETS_CONTAINER,
+    WIDGET_CARD,
     WIDGET_COLUMN,
+    WIDGET_DAILY,
     WIDGET_FORECAST,
-    COLUMN,
     WEATHER_LIST,
     WEATHER_LIST_ITEM,
     WEATHER_LIST_UNIT,
@@ -31,6 +34,7 @@ import {
     fadeIn,
     bounceIn,
     active,
+    TOP_CONTAINER,
     CELSIUS,
     FAHRENHEIT,
     WEATHER_TYPE,
@@ -68,9 +72,9 @@ import {
 
 } from '../scss/root.scss';
 
-@connect( ({weatherForecast}) => ({...weatherForecast}), {getPosition, getWeatherForecastByCity} )
+@connect( ({weatherDaily}) => ({...weatherDaily}), {getPosition, getWeatherDailyByCity, getWeatherDailyByCord} )
 
-class WeatherWidgetForecast extends Component {
+class WeatherWidgetDaily extends Component {
     static PropTypes = {
         appid: PropTypes.string.isRequired,
         city: PropTypes.string,
@@ -81,9 +85,9 @@ class WeatherWidgetForecast extends Component {
 
     static defaultProps = {
         width: '100%',
-        height: '400px'
+        height: '307px'
     };
-
+    
     constructor(props) {
         super(props);
     }
@@ -104,19 +108,6 @@ class WeatherWidgetForecast extends Component {
         );
     }
 
-    renderTimeList(weatherDate) {
-        let today = new Date(weatherDate);
-
-        let hours = today.getHours();
-        let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
-
-        return (
-            <div className={WEATHER_LIST_DATE}>
-                <div>{hours}:{minutes}</div>
-            </div>
-        );
-    }
-
     renderUnits(units) {
         switch (units) {
             case 'metric':
@@ -128,73 +119,63 @@ class WeatherWidgetForecast extends Component {
         }
     }
 
-    renderWeatherForecast(weatherForecast) {
-        const {units} = this.props;
+    renderWeatherDaily(weatherDaily) {
+        const {units, appid} = this.props;
 
-        if (!weatherForecast)
+        if (!weatherDaily)
             return (<Spinner/>);
 
-        let cityName = weatherForecast.city.name;
+        let cityName = weatherDaily.city.name;
         let WeatherList;
 
-        if (weatherForecast.cod == 200) {
-            WeatherList = weatherForecast.list.map((weatherItem, ii)=> {
+        if (weatherDaily.cod == 200) {
+            WeatherList = weatherDaily.list.map((weatherItem)=> {
 
                 let weatherName = weatherItem.weather[0].main;
                 let weatherIconId = weatherItem.weather[0].icon;
                 let weatherIcon = getWeatherIcon(weatherIconId);
-                let weatherTemp = weatherItem.main.temp;
-                let windSpeed = weatherItem.wind.speed;
-                let windDegry = weatherItem.wind.deg;
-                let humidity = weatherItem.main.humidity;
-
+                
                 return (
                     <div key={Math.random()} className={`${WEATHER_LIST_ITEM} ${animated} ${fadeIn}`}>
-                        {(((ii+1)%9==0) || (ii==0))?this.renderDateList(weatherItem.dt_txt):null}
-                        <div className={FLEX_ROW}>
-                            {this.renderTimeList(weatherItem.dt_txt)}
-                            <div className={`${FLEX_ROW} ${FLEX_1} ${FLEX_AROUND}`}>
-                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherIcon}</div>
-                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherName}</div>
-                                <div className={`${WEATHER_LIST_UNIT}`}>{weatherTemp}{this.renderUnits(units)}</div>
-                            </div>
-                            <div className={`${FLEX_ROW} ${FLEX_1} ${FLEX_AROUND} ${BG_DARK}`}>
-                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_windy}`}/>{windSpeed}</div>
-                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_small_craft_advisory}`}/>{windDegry}</div>
-                                <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_humidity}`}/>{humidity}</div>
-                            </div>
+                        <div className={FLEX_COLUMN}>
+                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherIcon}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}>{weatherName}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_day_sunny}`}/> {weatherItem.temp.day}{this.renderUnits(units, appid)}</div>
+                            <div className={`${WEATHER_LIST_UNIT}`}><i className={`${wi} ${wi_night_clear}`}/> {weatherItem.temp.night}{this.renderUnits(units, appid)}</div>
                         </div>
+                        {this.renderDateList(weatherItem.dt)}
                     </div>
                 )
+
             });
         }
 
         return (
-            <div className={`${WEATHER_LIST} ${COLUMN}`}>
+            <div className={`${WEATHER_LIST} ${FLEX_COLUMN}`}>
                 <div><h1>{cityName}</h1></div>
-                {WeatherList}
+                <div className={FLEX_ROW}>{WeatherList}</div>
             </div>
         )
     }
-
+    
     componentWillMount(){
-        const {getPosition, getWeatherForecastByCity, position, units, city, appid} = this.props;
+        const {getPosition, getWeatherDailyByCity, position, city, units, appid} = this.props;
 
         if (!position && !city) {
             getPosition(units, appid);
         } else {
-            getWeatherForecastByCity(city, units, appid);
+            getWeatherDailyByCity(city, units, appid);
         }
     }
 
     render() {
-        const {weatherForecast, width, height} = this.props;
+        const {weatherDaily, width, height} = this.props;
 
         return (
             <div className={ROOT}>
                 <div className={`${WIDGETS_CONTAINER}`}>
-                    <div className={`${WIDGET_FORECAST}`} style={{width: width, height: height}}>
-                        {this.renderWeatherForecast(weatherForecast)}
+                    <div className={`${WIDGET_DAILY}`} style={{width: width, height: height}}>
+                        {this.renderWeatherDaily(weatherDaily)}
                     </div>
                 </div>
             </div>
@@ -202,4 +183,4 @@ class WeatherWidgetForecast extends Component {
     }
 }
 
-export default WeatherWidgetForecast;
+export default WeatherWidgetDaily;

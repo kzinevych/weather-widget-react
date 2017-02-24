@@ -83,11 +83,6 @@ class WeatherWidgetToday extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            isActiveCel: true,
-            isActiveFah: false
-        }
     }
 
 

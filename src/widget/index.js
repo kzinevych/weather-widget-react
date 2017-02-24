@@ -1,6 +1,7 @@
 import {WeatherWidgetDemo, weatherDemo} from './WeatherWidget/demo';
 import {WeatherWidgetToday, weatherToday} from './WeatherWidget/today';
 import {WeatherWidgetForecast, weatherForecast} from './WeatherWidget/forecast';
+import {WeatherWidgetDaily, weatherDaily} from './WeatherWidget/daily';
 
 export {
     WeatherWidgetDemo,
@@ -8,5 +9,7 @@ export {
     WeatherWidgetToday,
     weatherToday,
     WeatherWidgetForecast,
-    weatherForecast
+    weatherForecast,
+    WeatherWidgetDaily,
+    weatherDaily
 }

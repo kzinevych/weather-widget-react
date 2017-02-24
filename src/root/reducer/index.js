@@ -1,11 +1,12 @@
 import {combineReducers} from "redux";
 
-import {weatherDemo, weatherToday, weatherForecast} from '../../widget';
+import {weatherDemo, weatherToday, weatherForecast, weatherDaily} from '../../widget';
 
 const rootReducer = combineReducers({
     weatherDemo,
     weatherToday,
-    weatherForecast
+    weatherForecast,
+    weatherDaily
 });
 
 export default rootReducer;
