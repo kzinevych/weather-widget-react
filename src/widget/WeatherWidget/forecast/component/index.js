@@ -105,11 +105,7 @@ class WeatherWidgetForecast extends Component {
     }
 
     renderTimeList(weatherDate) {
-        console.log('weatherDate',weatherDate);
         let today = new Date(weatherDate.replace(/-/g, "/"));
-
-        console.log('today',today);
-
         let hours = today.getHours();
         let minutes = (today.getMinutes() == 0)? '00' : today.getMinutes();
 
