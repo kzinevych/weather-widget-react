@@ -3,6 +3,7 @@
 **Just import widget reducer to (APP/reducers/index.js), and import Widget Component.**
 Working on Openweather API (http://openweathermap.org).
 
+# INSTALL PACKAGES
 npm i
 
 # TO RUN DEV
