@@ -5,7 +5,7 @@
   "scripts": {
     "build": "CLIENT='weather-widget' webpack --config webpack.production.config.js --progress --profile --colors",
     "dev": "CLIENT='weather-widget' webpack-dev-server --progress --debug --profile --colors",
-    "server": "CLIENT='weather-widget' nodemon server/index.js"
+    "start": "CLIENT='weather-widget' node server/index.js"
   },
   "dependencies": {
     "babel-register": "latest",
