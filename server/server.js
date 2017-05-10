@@ -20,10 +20,10 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.listen(process.env.PORT || 8000, '0.0.0.0', function (err) {
+app.listen(process.env.PORT || 5000, '0.0.0.0', function (err) {
   if (err) {
     console.error(err);
     return;
   }
-  console.log('Listening at http://localhost:8000');
+  console.log('Listening at http://localhost:5000');
 });
