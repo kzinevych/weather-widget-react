@@ -85,7 +85,7 @@ class WeatherWidgetDaily extends Component {
 
     static defaultProps = {
         width: '100%',
-        height: '307px'
+        height: '310px'
     };
     
     constructor(props) {

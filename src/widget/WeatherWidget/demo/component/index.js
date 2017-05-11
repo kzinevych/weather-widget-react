@@ -308,17 +308,17 @@ class WeatherWidgetDemo extends Component {
             <div className={ROOT}>
                 <input className={INPUT} type="text" name="city" placeholder="Enter City" value={city} onChange={ (e)=>{this.onChange(e)} }/>
                 <div className={`${WIDGETS_CONTAINER}`}>
-                    <h1 className={TITLE}>CURRENT WEATHER</h1>
+                    <h1 className={TITLE}>Weather today</h1>
                     <div className={`${WIDGET_CARD}`}>
                         {this.renderWeather(weather)}
                     </div>
 
-                    <h1 className={TITLE}>DAILY WEATHER</h1>
+                    <h1 className={TITLE}>Daily Weather</h1>
                     <div className={`${WIDGET_DAILY}`}>
                         {this.renderWeatherDaily(weatherDaily)}
                     </div>
 
-                    <h1 className={TITLE}>3 HOURS WEATHER</h1>
+                    <h1 className={TITLE}>Forecast weather (3 hours weather)</h1>
                     <div className={`${WIDGET_FORECAST}`}>
                         {this.renderWeatherForecast(weatherForecast)}
                     </div>
