@@ -29,11 +29,11 @@ $ npm start
 
 **Properties:**
 
-> city (string)
-> units (string) -> metric || imperial
-> appid (string) -> you API key (http://openweathermap.org)
-> width (string) -> default Value = 100%
-> height (string) -> default Value = 310px;
+> city (string) <br/>
+> units (string) -> metric || imperial <br/>
+> appid (string) -> you API key (http://openweathermap.org) <br/>
+> width (string) -> default Value = 100% <br/>
+> height (string) -> default Value = 310px <br/>
 
 
 ### Weather card (forecast):
@@ -43,11 +43,11 @@ $ npm start
 
 **Properties:**
 
-> city (string)
-> units (string) -> metric || imperial
-> appid (string) -> you API key (http://openweathermap.org)
-> width (string) -> default Value = 100%
-> height (string) -> default Value = 400px;
+> city (string) <br/>
+> units (string) -> metric || imperial <br/>
+> appid (string) -> you API key (http://openweathermap.org) <br/>
+> width (string) -> default Value = 100% <br/>
+> height (string) -> default Value = 400px <br/>
 
 ### Weather card (daily):
 ```
@@ -56,8 +56,8 @@ $ npm start
 
 **Properties:**
 
-> city (string)
-> units (string) -> metric || imperial
-> appid (string) -> you API key (http://openweathermap.org)
-> width (string) -> default Value = 100%
-> height (string) -> default Value = 310px;
+> city (string) <br/>
+> units (string) -> metric || imperial <br/>
+> appid (string) -> you API key (http://openweathermap.org) <br/>
+> width (string) -> default Value = 100% <br/>
+> height (string) -> default Value = 310px <br/>
