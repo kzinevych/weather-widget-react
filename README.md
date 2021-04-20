@@ -12,12 +12,12 @@ $ npm i
 ```
 ## Run development mode
 ```
-$ npm dev
+$ npm run dev
 ```
 ## Run production mode
 ```
-$ npm build
-$ npm start
+$ npm run build
+$ npm run start
 ```
 
 ## Easy to use
