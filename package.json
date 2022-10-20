@@ -26,7 +26,7 @@
     "method-override": "2.3.7",
     "moment": "2.17.1",
     "mongodb": "2.2.23",
-    "mongoose": "4.8.2",
+    "mongoose": "4.13.21",
     "morgan": "1.8.1",
     "normalize.css": "5.0.0",
     "offline-plugin": "4.6.1",
